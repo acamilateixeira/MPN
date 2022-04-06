@@ -10,6 +10,7 @@ export function App() {
   const { type } = useTheme();
 
   const theme = createTheme({
+    // paletta https://colorhunt.co/palette/f3c5c5c1a3a3886f6f694e4e
     palette: {
       type: type,
       primary: {
