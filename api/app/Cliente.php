@@ -2,27 +2,45 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Agenda;
+use App\Horario;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class Cliente extends Model
+class Cliente extends Authenticatable implements JWTSubject
 {
-    use HasFactory;
     use SoftDeletes;
 
-    protected $table = 'Cliente';
+    protected $table = 'Clientes';
     protected $fillable = [
+        'username',
         'nome',
         'email',
         'telefone',
-        'codEmpresa',
         'password',
         'cadastradoPor',
         'atualizadoPor',
         'deletadoPor',
     ];
 
-    public function empresa()
+    public function getJWTIdentifier()
     {
-        return $this->belongsTo(Empresa::class, 'codEmpresa');
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
+
+    public function agendamentos()
+    {
+        return $this->hasMany(Agenda::class, 'idCliente');
+    }
+
+    public function horarios()
+    {
+        return $this->belongsToMany(Horario::class, 'Agenda', 'idCliente', 'idHorario');
     }
 }

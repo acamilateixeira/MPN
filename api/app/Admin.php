@@ -5,24 +5,31 @@ namespace App;
 use App\Empresa;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends Authenticatable
+class Admin extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
-    protected $table = 'Admin';
+    protected $table = 'Administradores';
 
     protected $fillable = [
-        'name', 'codEmpresa', 'password',
+        'username', 'codEmpresa', 'password', 'cadastradoPor', 'atualizadoPor', 'deletadoPor',
     ];
 
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     public function empresas()
     {

@@ -3,20 +3,22 @@
 namespace App;
 
 use App\Cliente;
+use App\Empresa;
 use App\Horario;
 use App\Servico;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agenda extends Model
 {
-    use HasFactory;
+
     use SoftDeletes;
 
-    protected $table = 'Agenda';
+    protected $table = 'Agendas';
     protected $fillable = [
-        'cliente_id',
-        'servico_id',
-        'horario_id',
+        'idCliente',
+        'idHorario',
+        'codEmpresa',
         'cadastradoPor',
         'atualizadoPor',
         'deletadoPor',
@@ -24,16 +26,21 @@ class Agenda extends Model
 
     public function cliente()
     {
-        return $this->belongsTo(Cliente::class, 'cliente_id');
-    }
-
-    public function servico()
-    {
-        return $this->belongsTo(Servico::class, 'servico_id');
+        return $this->belongsTo(Cliente::class, 'idCliente');
     }
 
     public function horario()
     {
-        return $this->belongsTo(Horario::class, 'horario_id');
+        return $this->belongsTo(Horario::class, 'idHorario');
+    }
+
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class, 'codEmpresa');
+    }
+
+    public function servicos()
+    {
+        return $this->belongsToMany(Servico::class, 'Agenda', 'idHorario', 'idServico');
     }
 }
