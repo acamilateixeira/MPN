@@ -16,6 +16,7 @@ class CreateAgendasTable extends Migration
             $table->unsignedBigInteger('idHorario');
             $table->unsignedBigInteger('idCliente');
             $table->unsignedBigInteger('idStatus');
+            $table->decimal('valor', 10, 2);
 
             $table->string('cadastradoPor', 100);
             $table->string('atualizadoPor', 100);

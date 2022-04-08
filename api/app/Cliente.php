@@ -18,10 +18,13 @@ class Cliente extends Authenticatable implements JWTSubject
         'nome',
         'email',
         'telefone',
-        'password',
         'cadastradoPor',
         'atualizadoPor',
         'deletadoPor',
+    ];
+
+    protected $hidden = [
+        'password',
     ];
 
     public function getJWTIdentifier()

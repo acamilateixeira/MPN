@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Agenda;
 use App\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -10,11 +11,12 @@ class ClientesController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->username !== 'provedor') {
-            return response()->json(['erro' => 'Acesso negado.'], 400);
-        } else {
+        if (auth()->user()->username === 'provedor') {
             $clientes = Cliente::all();
             return response()->json($clientes);
+        } else {
+            $clientes = Agenda::where('codEmpresa', auth()->user()->codEmpresa)->with('clientes')->get();
+            return response()->json($clientes->pluck('clientes'));
         }
     }
 

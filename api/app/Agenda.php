@@ -18,6 +18,7 @@ class Agenda extends Model
     protected $fillable = [
         'idCliente',
         'idHorario',
+        'valor',
         'codEmpresa',
         'idStatus',
         'cadastradoPor',
@@ -25,7 +26,7 @@ class Agenda extends Model
         'deletadoPor',
     ];
 
-    public function cliente()
+    public function clientes()
     {
         return $this->belongsTo(Cliente::class, 'idCliente');
     }
