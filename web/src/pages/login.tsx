@@ -1,14 +1,4 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Container,
-  createStyles,
-  makeStyles,
-  TextField,
-  Theme,
-} from '@material-ui/core';
+import { Button, Container, createStyles, makeStyles, TextField, Theme } from '@material-ui/core';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 
@@ -80,41 +70,37 @@ export function Entrar() {
       />
 
       <Container component='main' maxWidth='xs' className={css.root}>
-        <Card>
-          <CardHeader style={{ textAlign: 'center' }} title='Entrar' />
+        <div className={css.form}>
+          <form itemID='signInForm' noValidate onSubmit={handleSubmit}>
+            <TextField
+              size='small'
+              variant='outlined'
+              margin='normal'
+              fullWidth
+              label='Usuário'
+              {...getFieldProps('username')}
+            />
+            <TextField
+              size='small'
+              variant='outlined'
+              margin='normal'
+              fullWidth
+              label='Senha'
+              type='password'
+              {...getFieldProps('password')}
+            />
 
-          <CardContent>
-            <form itemID='signInForm' noValidate onSubmit={handleSubmit}>
-              <TextField
-                size='small'
-                variant='outlined'
-                margin='normal'
-                fullWidth
-                label='Usuário'
-                {...getFieldProps('username')}
-              />
-              <TextField
-                size='small'
-                variant='outlined'
-                margin='normal'
-                fullWidth
-                label='Senha'
-                type='password'
-                {...getFieldProps('password')}
-              />
-
-              <Button
-                type='submit'
-                fullWidth
-                variant='contained'
-                color='primary'
-                className={css.submit}
-              >
-                Entrar
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+            <Button
+              type='submit'
+              fullWidth
+              variant='contained'
+              color='primary'
+              className={css.submit}
+            >
+              Entrar
+            </Button>
+          </form>
+        </div>
       </Container>
     </>
   );

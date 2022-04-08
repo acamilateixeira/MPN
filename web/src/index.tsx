@@ -1,12 +1,14 @@
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 
 import { App } from './app';
+import { AuthProvider } from './contexts/auth';
 import { ThemeProvider } from './contexts/theme';
 
-const container = document.getElementById('app') as HTMLElement;
-const root = createRoot(container);
-root.render(
+ReactDOM.render(
   <ThemeProvider>
-    <App />
-  </ThemeProvider>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </ThemeProvider>,
+  document.getElementById('root')
 );
