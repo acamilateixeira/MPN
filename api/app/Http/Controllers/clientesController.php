@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Acesso;
 use App\Cliente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -11,9 +10,12 @@ class ClientesController extends Controller
 {
     public function index()
     {
-        $clientes = Cliente::all();
-
-        return response()->json($clientes);
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        } else {
+            $clientes = Cliente::all();
+            return response()->json($clientes);
+        }
     }
 
     public function store(Request $request)
@@ -21,9 +23,9 @@ class ClientesController extends Controller
         $validator = Validator::make($request->all(), [
             'username' => 'required|string|max:255|unique:Clientes',
             'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:Clientes',
+            'email' => 'required|string|max:255|unique:Clientes',
             'telefone' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:6|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -39,43 +41,35 @@ class ClientesController extends Controller
                 'nome' => $request->nome,
                 'email' => $request->email,
                 'telefone' => $request->telefone,
-                'password' => hash('md5',$request->password),
+                'password' => hash('md5', $request->password),
                 'cadastradoPor' => auth()->user()->username,
                 'atualizadoPor' => auth()->user()->username,
             ]);
         } catch (\Exception $e) {
             return response()->json(['erro' => 'Falha ao criar cliente.'], 400);
         }
+
+        return response()->json([
+            'mensagem' => 'Conta criada com sucesso.',
+        ], 201);
     }
 
-    public function update(Request $request, $id)
+    public function destroy($id)
     {
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
-            'nome' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'telefone' => 'required|string|max:255',
-            'password' => 'required|string|min:6',
-        ]);
+        $cliente = Cliente::find($id);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'erro' => 'Falha ao atualizar cliente.',
-                'validacao' => $validator->errors(),
-            ], 400);
+        if (!$cliente) {
+            return response()->json(['erro' => 'Cliente não encontrado.'], 400);
         }
 
-        try {
+        if (auth()->user()->username === 'provedor' || auth()->user()->username === $cliente->username) {
             $cliente = Cliente::find($id);
-            $cliente->username = $request->username;
-            $cliente->nome = $request->nome;
-            $cliente->email = $request->email;
-            $cliente->telefone = $request->telefone;
-            $cliente->password = hash('md5',$request->password);
-            $cliente->atualizadoPor = auth()->user()->username;
-            $cliente->save();
-        } catch (\Exception $e) {
-            return response()->json(['erro' => 'Falha ao atualizar cliente.'], 400);
+            $cliente->delete();
+            return response()->json([
+                'mensagem' => 'Conta excluída com sucesso.',
+            ], 200);
+        } else {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
         }
     }
-
+}

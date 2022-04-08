@@ -19,6 +19,7 @@ class Agenda extends Model
         'idCliente',
         'idHorario',
         'codEmpresa',
+        'idStatus',
         'cadastradoPor',
         'atualizadoPor',
         'deletadoPor',

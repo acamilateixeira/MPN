@@ -15,6 +15,7 @@ class CreateAgendasTable extends Migration
             $table->unsignedInteger('codEmpresa');
             $table->unsignedBigInteger('idHorario');
             $table->unsignedBigInteger('idCliente');
+            $table->unsignedBigInteger('idStatus');
 
             $table->string('cadastradoPor', 100);
             $table->string('atualizadoPor', 100);
@@ -23,6 +24,7 @@ class CreateAgendasTable extends Migration
             $table->foreign('codEmpresa')->references('codEmpresa')->on('Empresas');
             $table->foreign('idCliente')->references('id')->on('Clientes');
             $table->foreign('idHorario')->references('id')->on('Horarios');
+            $table->foreign('idStatus')->references('id')->on('Status');
         });
     }
 

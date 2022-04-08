@@ -17,6 +17,10 @@ class AcessosController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'descricao' => 'required|string|max:255',
         ]);
@@ -43,6 +47,10 @@ class AcessosController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'descricao' => 'required|string|max:255',
         ]);
@@ -69,6 +77,10 @@ class AcessosController extends Controller
 
     public function destroy($id)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         try {
             $acesso = Acesso::findOrFail($id);
 

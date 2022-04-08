@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\AcessosController;
+use App\Http\Controllers\AdministradoresController;
+use App\Http\Controllers\AgendamentosController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientesController;
+use App\Http\Controllers\EmpresasController;
+use App\Http\Controllers\HorariosController;
+use App\Http\Controllers\ServicosController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('auth')->group(function () {

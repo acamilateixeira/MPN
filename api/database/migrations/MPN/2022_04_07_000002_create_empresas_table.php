@@ -17,7 +17,6 @@ class CreateEmpresasTable extends Migration
             $table->string('email', 100);
             $table->string('telefone', 100);
             $table->unsignedBigInteger('idAcesso');
-            $table->string('username', 100)->unique();
 
             $table->string('cadastradoPor', 100);
             $table->string('atualizadoPor', 100);

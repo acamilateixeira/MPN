@@ -17,6 +17,8 @@ class Servico extends Model
     protected $table = 'Servicos';
     protected $fillable = [
         'descricao',
+        'valor',
+        'detalhes',
         'cadastradoPor',
         'atualizadoPor',
         'deletadoPor',

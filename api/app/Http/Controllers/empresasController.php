@@ -10,6 +10,10 @@ class EmpresasController extends Controller
 {
     public function index()
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         $empresas = Empresa::all();
 
         return response()->json($empresas);
@@ -17,12 +21,14 @@ class EmpresasController extends Controller
 
     public function store(Request $request)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'nomeRazaoSocial' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:Empresas',
+            'email' => 'required|string|max:255|unique:Empresas',
             'telefone' => 'required|string|max:255',
-            'idAcesso' => 'required|integer',
-            'username' => 'required|string|max:255|unique:Empresas',
         ]);
 
         if ($validator->fails()) {
@@ -32,18 +38,23 @@ class EmpresasController extends Controller
             ], 400);
         }
 
+        $codEmpresa = rand(1, 99999);
+
         try {
             $empresa = Empresa::create([
                 'nomeRazaoSocial' => $request->nomeRazaoSocial,
                 'email' => $request->email,
                 'telefone' => $request->telefone,
-                'idAcesso' => $request->idAcesso,
-                'username' => $request->username,
+                'idAcesso' => 1,
+                'codEmpresa' => $codEmpresa,
                 'cadastradoPor' => auth()->user()->username,
                 'atualizadoPor' => auth()->user()->username,
             ]);
         } catch (\Exception $e) {
-            return response()->json(['erro' => 'Falha ao criar empresa.'], 400);
+            return response()->json([
+                'erro' => 'Falha ao criar empresa.',
+                'validacao' => $e->getMessage(),
+            ], 400);
         }
 
         return response()->json([
@@ -54,30 +65,38 @@ class EmpresasController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         $validator = Validator::make($request->all(), [
             'nomeRazaoSocial' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|string|max:255|unique:Empresas,email,' . $id,
             'telefone' => 'required|string|max:255',
-            'idAcesso' => 'required|integer',
-            'username' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
+            return response()->json([
+                'erro' => 'Falha ao atualizar empresa.',
+                'validacao' => $validator->errors(),
+            ], 400);
         }
 
         try {
-            $empresa = Empresa::findOrFail($id);
+            $empresa = Empresa::find($id);
             $empresa->update([
                 'nomeRazaoSocial' => $request->nomeRazaoSocial,
                 'email' => $request->email,
                 'telefone' => $request->telefone,
-                'idAcesso' => $request->idAcesso,
-                'username' => $request->username,
                 'atualizadoPor' => auth()->user()->username,
             ]);
+
+            $empresa->save();
         } catch (\Exception $e) {
-            return response()->json(['erro' => 'Falha ao atualizar empresa.'], 400);
+            return response()->json([
+                'erro' => 'Falha ao atualizar empresa.',
+                'validacao' => $e->getMessage(),
+            ], 400);
         }
 
         return response()->json([
@@ -88,11 +107,18 @@ class EmpresasController extends Controller
 
     public function destroy($id)
     {
+        if (auth()->user()->username !== 'provedor') {
+            return response()->json(['erro' => 'Acesso negado.'], 400);
+        }
+
         try {
             $empresa = Empresa::findOrFail($id);
             $empresa->delete();
         } catch (\Exception $e) {
-            return response()->json(['erro' => 'Falha ao excluir empresa.'], 400);
+            return response()->json([
+                'erro' => 'Falha ao excluir empresa.',
+                'validacao' => $e->getMessage(),
+            ], 400);
         }
 
         return response()->json([
