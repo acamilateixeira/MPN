@@ -1,13 +1,16 @@
 import '@fontsource/poppins';
 
-import { CssBaseline } from '@material-ui/core';
+import { CssBaseline, Typography } from '@material-ui/core';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
+import { useAuth } from '../hooks/useAuth';
 import { useTheme } from '../hooks/useTheme';
 import { AppRoutes } from './routes/app';
+import { AuthRoutes } from './routes/auth';
 
 export function App() {
   const { type } = useTheme();
+  const { isLoading, isAuthenticated } = useAuth();
 
   const theme = createTheme({
     // paletta https://colorhunt.co/palette/f3c5c5c1a3a3886f6f694e4e
@@ -37,11 +40,18 @@ export function App() {
     },
   });
 
+  if (isLoading) {
+    return <Typography>Carregando...</Typography>;
+  }
+
   return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppRoutes />
+
+        {isLoading && <Typography>Carregando...</Typography>}
+
+        {isAuthenticated ? <AppRoutes /> : <AuthRoutes />}
       </ThemeProvider>
     </>
   );
