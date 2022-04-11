@@ -7,7 +7,7 @@ interface AuthContextData {
   isLoading: boolean;
   signIn: (
     credenciais: SignInCredentials
-  ) => Promise<Omit<SignInResponse, 'token' | 'username' | 'codEmpresa'>>;
+  ) => Promise<Omit<SignInResponse, 'tkey' | 'username' | 'codEmpresa'>>;
   signOut: () => void;
 }
 
@@ -18,16 +18,14 @@ interface AuthContextProps {
 export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthContextProps) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
 
   async function signIn(
     credentials: SignInCredentials
-  ): Promise<Omit<SignInResponse, 'token' | 'username' | 'codEmpresa'>> {
+  ): Promise<Omit<SignInResponse, 'tkey' | 'username' | 'codEmpresa'>> {
     const { username, success, message } = await AuthServices.signIn(credentials);
 
-    setIsAuthenticated(success);
     setUsername(username);
 
     return { success, message };
@@ -37,11 +35,10 @@ export function AuthProvider({ children }: AuthContextProps) {
     setIsLoading(true);
     try {
       await AuthServices.signOut();
-
-      setIsAuthenticated(false);
     } catch (error) {
       console.error(error);
     } finally {
+      setUsername(null);
       setIsLoading(false);
     }
   }
@@ -60,7 +57,9 @@ export function AuthProvider({ children }: AuthContextProps) {
   }, [setUsername]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, signIn, signOut }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated: !!username && username !== '', isLoading, signIn, signOut }}
+    >
       {children}
     </AuthContext.Provider>
   );

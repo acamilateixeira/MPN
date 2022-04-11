@@ -7,11 +7,11 @@ const api = axios.create({
 });
 
 api.interceptors.request.use(async config => {
-  const token = AuthServices.getToken();
+  const tkey = AuthServices.getTkey();
 
-  if (token) {
+  if (tkey) {
     config.headers = {
-      Authorization: `Bearer ${token}`,
+      Authorization: `Bearer ${tkey}`,
     };
   }
 

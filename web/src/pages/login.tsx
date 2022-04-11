@@ -1,7 +1,22 @@
-import { Button, Container, createStyles, makeStyles, TextField, Theme } from '@material-ui/core';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  Container,
+  createStyles,
+  Divider,
+  makeStyles,
+  TextField,
+  Theme,
+} from '@material-ui/core';
+import { Person } from '@material-ui/icons';
 import { useFormik } from 'formik';
 import { useState } from 'react';
+import { MdAddBusiness } from 'react-icons/md';
 
+import { ModalLogin } from '../components/Auth/modalLogin';
+import { Footer } from '../components/footer';
 import { PopUpAlert } from '../components/popUpAlert';
 import { useAuth } from '../hooks/useAuth';
 
@@ -9,6 +24,10 @@ export function Entrar() {
   const [alertMessage, setAlertMessage] = useState('');
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertType, setAlertType] = useState<'success' | 'info' | 'error'>('success');
+
+  const [tipoAcesso, setTipoAcesso] = useState<'EMPRESA' | 'CLIENTE'>('CLIENTE');
+
+  const [modalLogin, setModalLogin] = useState(true);
 
   const css = makeStyles((theme: Theme) =>
     createStyles({
@@ -21,7 +40,7 @@ export function Entrar() {
       },
       form: {
         width: '100%',
-        maxWidth: '300px',
+        maxWidth: '500px',
         marginTop: theme.spacing(3),
       },
       submit: {
@@ -50,7 +69,7 @@ export function Entrar() {
         const { success, message } = await signIn({
           password: values.password,
           username: values.username,
-          codEmpresa: 1,
+          tipoAcesso: tipoAcesso,
         });
 
         setAlertType(success ? 'success' : 'error');
@@ -70,38 +89,104 @@ export function Entrar() {
       />
 
       <Container component='main' maxWidth='xs' className={css.root}>
-        <div className={css.form}>
-          <form itemID='signInForm' noValidate onSubmit={handleSubmit}>
-            <TextField
-              size='small'
-              variant='outlined'
-              margin='normal'
-              fullWidth
-              label='Usuário'
-              {...getFieldProps('username')}
-            />
-            <TextField
-              size='small'
-              variant='outlined'
-              margin='normal'
-              fullWidth
-              label='Senha'
-              type='password'
-              {...getFieldProps('password')}
-            />
+        <Card className={css.form}>
+          {tipoAcesso === 'CLIENTE' ? (
+            <>
+              <CardHeader
+                title='Entrar como cliente'
+                avatar={
+                  <Person
+                    style={{
+                      fontSize: '2rem',
+                      color: '#4caf50',
+                    }}
+                  />
+                }
+              />
 
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={css.submit}
-            >
-              Entrar
-            </Button>
-          </form>
-        </div>
+              <CardContent>
+                <Button
+                  onClick={() => setTipoAcesso('EMPRESA')}
+                  fullWidth
+                  color='secondary'
+                  variant='contained'
+                  startIcon={<MdAddBusiness />}
+                >
+                  TROCAR PARA EMPRESA
+                </Button>
+              </CardContent>
+            </>
+          ) : (
+            <>
+              <CardHeader
+                title='Entrar como empresa'
+                avatar={
+                  <MdAddBusiness
+                    style={{
+                      fontSize: '2rem',
+                      color: '#4caf50',
+                    }}
+                  />
+                }
+              />
+
+              <CardContent>
+                <Button
+                  onClick={() => setTipoAcesso('CLIENTE')}
+                  fullWidth
+                  color='secondary'
+                  variant='contained'
+                  startIcon={<Person />}
+                >
+                  TROCAR PARA CLIENTE
+                </Button>
+              </CardContent>
+            </>
+          )}
+
+          <Divider />
+
+          <CardContent>
+            <form onSubmit={handleSubmit} noValidate>
+              <TextField
+                size='small'
+                variant='outlined'
+                margin='normal'
+                fullWidth
+                label='Usuário'
+                {...getFieldProps('username')}
+              />
+              <TextField
+                size='small'
+                variant='outlined'
+                margin='normal'
+                fullWidth
+                label='Senha'
+                type='password'
+                {...getFieldProps('password')}
+              />
+
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                color='primary'
+                className={css.submit}
+              >
+                Entrar
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+
+        <Footer />
       </Container>
+
+      <ModalLogin
+        isOpen={modalLogin}
+        setTipoAcesso={setTipoAcesso}
+        onClose={() => setModalLogin(false)}
+      />
     </>
   );
 }

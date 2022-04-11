@@ -1,12 +1,16 @@
 import { AppBar, Grid, IconButton, Toolbar, useMediaQuery, useTheme as useThemeMaterialUI } from '@material-ui/core';
 import { MdExitToApp, MdMenuOpen } from 'react-icons/md';
 
+import { useAuth } from '../hooks/useAuth';
+
 interface NavbarProps {
   toggleHiddenSidebar: () => void;
 }
 
 export function Navbar({ toggleHiddenSidebar }: NavbarProps) {
   const theme = useThemeMaterialUI();
+
+  const { signOut } = useAuth();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -33,7 +37,7 @@ export function Navbar({ toggleHiddenSidebar }: NavbarProps) {
           </Grid>
 
           <Grid item>
-            <IconButton>
+            <IconButton onClick={signOut}>
               <MdExitToApp />
             </IconButton>
           </Grid>

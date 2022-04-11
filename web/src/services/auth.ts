@@ -5,13 +5,13 @@ import api from '../services/api';
 export interface SignInCredentials {
   username: string;
   password: string;
-  codEmpresa: number | undefined;
+  tipoAcesso: 'EMPRESA' | 'CLIENTE';
 }
 
 export interface SignInResponse {
   username: string | null;
   codEmpresa: number | null;
-  token: string | null;
+  tkey: string | null;
   success: boolean;
   message: string;
 }
@@ -27,8 +27,8 @@ class AuthServices {
     return null;
   }
 
-  getToken(): string | undefined {
-    return Cookie.get('@MPN:Token');
+  getTkey(): string | undefined {
+    return Cookie.get('@MPN:Tkey');
   }
 
   getUsername(): string | null {
@@ -43,18 +43,36 @@ class AuthServices {
 
   async signIn(credenciais: SignInCredentials): Promise<SignInResponse> {
     try {
-      const response = await api.post('/auth/admin', credenciais);
+      var link;
 
-      const { username, codEmpresa, token } = response.data.usuario;
+      if (credenciais.tipoAcesso === 'EMPRESA') {
+        link = '/auth/empresa';
+      } else {
+        link = '/auth';
+      }
 
-      Cookie.set('@MPN:username', JSON.stringify(username));
-      Cookie.set('@MPN:CodEmpresa', JSON.stringify(codEmpresa));
-      Cookie.set('@MPN:Token', token);
+      const response = await api.post(link, credenciais);
+
+      const { username, codEmpresa } = response.data.usuario;
+      const { tkey } = response.data;
+
+      Cookie.set('@MPN:username', JSON.stringify(username), {
+        secure: false,
+        sameSite: 'strict',
+      });
+      Cookie.set('@MPN:CodEmpresa', JSON.stringify(codEmpresa), {
+        secure: false,
+        sameSite: 'strict',
+      });
+      Cookie.set('@MPN:Tkey', tkey, {
+        secure: false,
+        sameSite: 'strict',
+      });
 
       return {
         username,
         codEmpresa,
-        token,
+        tkey,
         success: true,
         message: 'Aguarde, você será redirecionado...',
       };
@@ -62,7 +80,7 @@ class AuthServices {
       return {
         username: null,
         codEmpresa: null,
-        token: null,
+        tkey: null,
         success: false,
         message: error.response ? error.response.data.erro : 'Erro de comunicação',
       };
@@ -75,7 +93,7 @@ class AuthServices {
 
       Cookie.remove('@MPN:username');
       Cookie.remove('@MPN:CodEmpresa');
-      Cookie.remove('@MPN:Token');
+      Cookie.remove('@MPN:Tkey');
     } catch (error) {
       console.error(error);
     }

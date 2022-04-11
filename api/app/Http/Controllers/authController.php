@@ -66,12 +66,12 @@ class AuthController extends Controller
                     'codEmpresa' => $user->codEmpresa,
                     'nomeEmpresa' => $empresa->nomeRazaoSocial,
                 ],
-                'token' => $token,
+                'tkey' => $token,
             ], 200);
         }
     }
 
-    public function loginCliente(Request $request, $codEmpresa)
+    public function loginCliente(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'username' => 'required',
@@ -93,17 +93,9 @@ class AuthController extends Controller
             return response()->json(['erro' => 'Credenciais inválidas.'], 401);
         }
 
-        $empresa = Empresa::where('codEmpresa', $codEmpresa)
-            ->where('idAcesso', 1)
-            ->first();
-
-        if (!$empresa) {
-            return response()->json(['erro' => 'A empresa que está tentando conectar não está em nossos sistemas'], 401);
-        }
-
         $session = Auditoria::create([
             'username' => $user->username,
-            'codEmpresa' => $user->codEmpresa,
+            'codEmpresa' => 9999,
             'tokenGeradoEm' => Carbon::now()->toDateTimeString(),
             'tokenRevogadoEm' => Carbon::now()->addHour()->toDateTimeString(),
         ]);
@@ -113,7 +105,12 @@ class AuthController extends Controller
         } else {
             return response()->json([
                 'message' => 'Login realizado com sucesso.',
-                'token' => $token,
+                'usuario' => [
+                    'username' => $user->username,
+                    'codEmpresa' => $user->codEmpresa,
+                    'nomeEmpresa' => 'cliente',
+                ],
+                'tkey' => $token,
             ], 200);
         }
     }

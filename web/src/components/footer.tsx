@@ -15,7 +15,7 @@ export function Footer() {
         {'Copyright © '}
 
         <Link color='inherit' href='https://www.instagram.com/acamilateixeiraa'>
-          acamilateixeiraa
+          CXT - SISTEMAS
         </Link>
 
         {` ${new Date().getFullYear()}.`}

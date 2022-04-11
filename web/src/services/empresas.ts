@@ -1,28 +1,28 @@
-import { Cliente } from '../models/cliente';
+import { Empresa } from '../models/empresa';
 import api from './api';
 
-class ClientesServices {
+class EmpresasServices {
   async index() {
-    const { data } = await api.get('/clientes');
+    const { data } = await api.get('/empresas');
 
-    return data as Cliente[];
+    return data as Empresa[];
   }
 
-  async store(cliente: Cliente) {
-    const { data } = await api.post('/clientes', cliente);
+  async store(empresa: Empresa) {
+    const { data } = await api.post('/empresas', empresa);
 
-    return data as Cliente;
+    return data as Empresa;
   }
 
-  async update(cliente: Cliente) {
-    const { data } = await api.put(`/clientes/${cliente.id}`, cliente);
+  async update(empresa: Empresa) {
+    const { data } = await api.put(`/empresas/${empresa.id}`, empresa);
 
-    return data as Cliente;
+    return data as Empresa;
   }
 
   async delete(id: number) {
-    await api.delete(`/clientes/${id}`);
+    await api.delete(`/empresas/${id}`);
   }
 }
 
-export default new ClientesServices();
+export default new EmpresasServices();
