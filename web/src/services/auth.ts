@@ -45,7 +45,7 @@ class AuthServices {
     try {
       const response = await api.post('/auth/admin', credenciais);
 
-      const { username, codEmpresa, token } = response.data;
+      const { username, codEmpresa, token } = response.data.usuario;
 
       Cookie.set('@MPN:username', JSON.stringify(username));
       Cookie.set('@MPN:CodEmpresa', JSON.stringify(codEmpresa));
@@ -64,7 +64,7 @@ class AuthServices {
         codEmpresa: null,
         token: null,
         success: false,
-        message: error.response ? error.response.data.message : 'Erro de comunicação',
+        message: error.response ? error.response.data.erro : 'Erro de comunicação',
       };
     }
   }

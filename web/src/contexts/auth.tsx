@@ -22,16 +22,12 @@ export function AuthProvider({ children }: AuthContextProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
 
-  console.log('username', username);
-
   async function signIn(
     credentials: SignInCredentials
   ): Promise<Omit<SignInResponse, 'token' | 'username' | 'codEmpresa'>> {
-    const { username, codEmpresa, success, message } = await AuthServices.signIn(credentials);
+    const { username, success, message } = await AuthServices.signIn(credentials);
 
-    console.log(success, message);
-    console.log(username, codEmpresa);
-    setIsAuthenticated(true);
+    setIsAuthenticated(success);
     setUsername(username);
 
     return { success, message };

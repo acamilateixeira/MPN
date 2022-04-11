@@ -53,8 +53,8 @@ export function Entrar() {
           codEmpresa: 1,
         });
 
-        setAlertMessage(message);
         setAlertType(success ? 'success' : 'error');
+        setAlertMessage(message);
         setAlertIsOpen(true);
       }
     },
