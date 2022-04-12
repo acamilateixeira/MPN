@@ -30,7 +30,7 @@ class ServicosController extends Controller
                     ], 400);
                 }
 
-                $servicos = Servico::with('empresa', 'horarios')
+                $servicos = Servico::with('horarios')
                     ->where('codEmpresa', $request->codEmpresa)
                     ->get();
 

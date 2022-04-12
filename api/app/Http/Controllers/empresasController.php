@@ -10,13 +10,37 @@ class EmpresasController extends Controller
 {
     public function index()
     {
-        if (auth()->user()->username !== 'provedor') {
-            return response()->json(['erro' => 'Acesso negado.'], 400);
+        if (auth()->user()->username === 'provedor') {
+            return response()->json(
+                Empresa::with('servicos', 'horarios', 'acessos', 'agendas')
+                    ->get(),
+                200);
+        } else {
+            if (auth()->user()->codEmpresa !== "9999") {
+                return response()->json(
+                    Empresa::with('servicos', 'horarios', 'acessos', 'agendas')
+                        ->where('codEmpresa', auth()->user()->codEmpresa)
+                        ->get(),
+                    200);
+
+            } else {
+                $empresas = Empresa::with('servicos', 'horarios', 'acessos', 'agendas')
+                    ->get();
+
+                $empresasCollection = $empresas->map(function ($empresa) {
+                    return [
+                        'nomeRazaoSocial' => $empresa->nomeRazaoSocial,
+                        'codEmpresa' => $empresa->codEmpresa,
+                        'servicos' => $empresa->servicos,
+                        'horarios' => $empresa->horarios,
+                    ];
+                });
+
+                return response()->json(
+                    $empresasCollection,
+                    200);
+            }
         }
-
-        $empresas = Empresa::with('servicos', 'horarios', 'acessos', 'agendas')->get();
-
-        return response()->json($empresas);
     }
 
     public function store(Request $request)
