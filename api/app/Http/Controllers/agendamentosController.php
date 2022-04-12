@@ -13,11 +13,27 @@ class AgendamentosController extends Controller
     public function index()
     {
         if (auth()->user()->username === 'provedor') {
-            return response()->json(Agenda::all(), 200);
+            return response()->json(
+                Agenda::with('cliente', 'horario', 'horario.servicos', 'status')
+                    ->get(),
+                200);
         } else {
-            $agendamentos = Agenda::where('codEmpresa', auth()->user()->codEmpresa)->get();
+            if (auth()->user()->codEmpresa !== "9999") {
+                return response()->json(
+                    Agenda::with('cliente', 'horario', 'horario.servicos', 'status')
+                        ->where('codEmpresa', auth()->user()->codEmpresa)
+                        ->get(),
+                    200);
+            } else {
+                $idCliente = Cliente::where('username', auth()->user()->username)
+                    ->pluck('id');
 
-            return response()->json($agendamentos, 200);
+                return response()->json(
+                    Agenda::with('cliente', 'horario', 'horario.servicos', 'status')
+                        ->where('idCliente', $idCliente)
+                        ->get(),
+                    200);
+            }
         }
     }
 

@@ -100,6 +100,8 @@ class AuthController extends Controller
             'tokenRevogadoEm' => Carbon::now()->addHour()->toDateTimeString(),
         ]);
 
+        auth()->login($session, true);
+
         if (!$token = auth()->tokenById($session->id)) {
             return response()->json(['erro' => 'Falha ao gerar token.'], 401);
         } else {
@@ -107,7 +109,7 @@ class AuthController extends Controller
                 'message' => 'Login realizado com sucesso.',
                 'usuario' => [
                     'username' => $user->username,
-                    'codEmpresa' => $user->codEmpresa,
+                    'codEmpresa' => null,
                     'nomeEmpresa' => 'cliente',
                 ],
                 'tkey' => $token,

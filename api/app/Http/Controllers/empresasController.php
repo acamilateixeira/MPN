@@ -14,7 +14,7 @@ class EmpresasController extends Controller
             return response()->json(['erro' => 'Acesso negado.'], 400);
         }
 
-        $empresas = Empresa::all();
+        $empresas = Empresa::with('servicos', 'horarios', 'acessos', 'agendas')->get();
 
         return response()->json($empresas);
     }

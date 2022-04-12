@@ -2,8 +2,6 @@
 
 namespace App;
 
-use App\Agenda;
-use App\Cliente;
 use App\Empresa;
 use App\Servico;
 use Illuminate\Database\Eloquent\Model;
@@ -24,11 +22,6 @@ class Horario extends Model
         'codEmpresa',
     ];
 
-    public function agendas()
-    {
-        return $this->hasMany(Agenda::class, 'idHorario');
-    }
-
     public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'codEmpresa');
@@ -39,8 +32,8 @@ class Horario extends Model
         return $this->belongsTo(Servico::class, 'idServico');
     }
 
-    public function clientes()
+    public function agendas()
     {
-        return $this->belongsToMany(Cliente::class, 'Agenda', 'idHorario', 'idCliente');
+        return $this->hasMany(Agenda::class, 'id', 'idHorario');
     }
 }

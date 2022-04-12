@@ -7,10 +7,10 @@ import Grid from '@material-ui/core/Grid';
 interface ModalLoginProps {
   isOpen: boolean;
   onClose: () => void;
-  setTipoAcesso: (tipoAcesso: 'EMPRESA' | 'CLIENTE') => void;
+  setTipoAuth: (tipoAuth: 'EMPRESA' | 'CLIENTE') => void;
 }
 
-export function ModalLogin({ isOpen, onClose, setTipoAcesso }: ModalLoginProps) {
+export function ModalLogin({ isOpen, onClose, setTipoAuth }: ModalLoginProps) {
   return (
     <>
       <Dialog maxWidth='sm' fullWidth open={isOpen} onClose={onClose}>
@@ -24,7 +24,7 @@ export function ModalLogin({ isOpen, onClose, setTipoAcesso }: ModalLoginProps) 
                 color='secondary'
                 variant='contained'
                 onClick={() => {
-                  setTipoAcesso('EMPRESA');
+                  setTipoAuth('EMPRESA');
                   onClose();
                 }}
               >
@@ -39,7 +39,7 @@ export function ModalLogin({ isOpen, onClose, setTipoAcesso }: ModalLoginProps) 
                 color='primary'
                 variant='contained'
                 onClick={() => {
-                  setTipoAcesso('CLIENTE');
+                  setTipoAuth('CLIENTE');
                   onClose();
                 }}
               >

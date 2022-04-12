@@ -25,7 +25,7 @@ export function Entrar() {
   const [alertIsOpen, setAlertIsOpen] = useState(false);
   const [alertType, setAlertType] = useState<'success' | 'info' | 'error'>('success');
 
-  const [tipoAcesso, setTipoAcesso] = useState<'EMPRESA' | 'CLIENTE'>('CLIENTE');
+  const [tipoAuth, setTipoAuth] = useState<'EMPRESA' | 'CLIENTE'>('CLIENTE');
 
   const [modalLogin, setModalLogin] = useState(true);
 
@@ -69,7 +69,7 @@ export function Entrar() {
         const { success, message } = await signIn({
           password: values.password,
           username: values.username,
-          tipoAcesso: tipoAcesso,
+          tipoAuth: tipoAuth,
         });
 
         setAlertType(success ? 'success' : 'error');
@@ -90,7 +90,7 @@ export function Entrar() {
 
       <Container component='main' maxWidth='xs' className={css.root}>
         <Card className={css.form}>
-          {tipoAcesso === 'CLIENTE' ? (
+          {tipoAuth === 'CLIENTE' ? (
             <>
               <CardHeader
                 title='Entrar como cliente'
@@ -106,7 +106,7 @@ export function Entrar() {
 
               <CardContent>
                 <Button
-                  onClick={() => setTipoAcesso('EMPRESA')}
+                  onClick={() => setTipoAuth('EMPRESA')}
                   fullWidth
                   color='secondary'
                   variant='contained'
@@ -132,7 +132,7 @@ export function Entrar() {
 
               <CardContent>
                 <Button
-                  onClick={() => setTipoAcesso('CLIENTE')}
+                  onClick={() => setTipoAuth('CLIENTE')}
                   fullWidth
                   color='secondary'
                   variant='contained'
@@ -184,7 +184,7 @@ export function Entrar() {
 
       <ModalLogin
         isOpen={modalLogin}
-        setTipoAcesso={setTipoAcesso}
+        setTipoAuth={setTipoAuth}
         onClose={() => setModalLogin(false)}
       />
     </>

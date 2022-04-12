@@ -9,14 +9,33 @@ use Illuminate\Support\Facades\Validator;
 
 class ServicosController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (auth()->user()->username === 'provedor') {
-            return response()->json(Servico::all(), 200);
+            return response()->json(
+                Servico::with('empresa', 'horarios', 'agendas.cliente')
+                    ->get(),
+                200);
         } else {
-            $servicos = Servico::where('codEmpresa', auth()->user()->codEmpresa)->get();
+            if (auth()->user()->codEmpresa !== "9999") {
+                return response()->json(
+                    Servico::with('empresa', 'horarios', 'agendas.cliente')
+                        ->where('codEmpresa', auth()->user()->codEmpresa)
+                        ->get(),
+                    200);
+            } else {
+                if (!$request->codEmpresa) {
+                    return response()->json([
+                        'erro' => 'Não autorizado.',
+                    ], 400);
+                }
 
-            return response()->json($servicos, 200);
+                $servicos = Servico::with('empresa', 'horarios')
+                    ->where('codEmpresa', $request->codEmpresa)
+                    ->get();
+
+                return response()->json($servicos, 200);
+            }
         }
     }
 

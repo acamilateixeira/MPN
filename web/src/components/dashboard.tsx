@@ -38,7 +38,6 @@ export function Dashboard({ children }: DashboardProps) {
         <Navbar toggleHiddenSidebar={toggleHiddenSidebar} />
 
         <main className={css.content}>
-          <div className={css.toolbar} />
           <Container
             maxWidth='xl'
             style={{
@@ -46,11 +45,11 @@ export function Dashboard({ children }: DashboardProps) {
             }}
           >
             <Grid container>
-              <Grid item xl={12} lg={12} md={12}>
+              <Grid item xs={12}>
                 {children}
               </Grid>
 
-              <Grid item xl={12} lg={12} md={12}>
+              <Grid item xs={12}>
                 <Footer />
               </Grid>
             </Grid>

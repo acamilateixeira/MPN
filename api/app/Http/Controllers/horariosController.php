@@ -12,11 +12,22 @@ class HorariosController extends Controller
     public function index()
     {
         if (auth()->user()->username === 'provedor') {
-            return response()->json(Horario::all(), 200);
+            return response()->json(
+                Horario::with('servicos', 'servicos.agendas')
+                    ->get(),
+                200);
         } else {
-            $horarios = Horario::where('codEmpresa', auth()->user()->codEmpresa)->get();
-
-            return response()->json($horarios, 200);
+            if (auth()->user()->codEmpresa !== "9999") {
+                return response()->json(
+                    Horario::with('servicos', 'servicos.agendas')
+                        ->where('codEmpresa', auth()->user()->codEmpresa)
+                        ->get(),
+                    200);
+            } else {
+                return response()->json([
+                    'erro' => 'Você não tem permissão para acessar essa página.',
+                ], 400);
+            }
         }
     }
 

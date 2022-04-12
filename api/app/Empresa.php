@@ -4,7 +4,6 @@ namespace App;
 
 use App\Acesso;
 use App\Agenda;
-use App\Cliente;
 use App\Horario;
 use App\Servico;
 use Illuminate\Database\Eloquent\Model;
@@ -35,21 +34,16 @@ class Empresa extends Model
 
     public function servicos()
     {
-        return $this->hasMany(Servico::class, 'codEmpresa');
+        return $this->hasMany(Servico::class, 'codEmpresa', 'codEmpresa');
     }
 
     public function horarios()
     {
-        return $this->hasMany(Horario::class, 'codEmpresa');
-    }
-
-    public function clientes()
-    {
-        return $this->belongsToMany(Cliente::class, 'Agenda', 'codEmpresa', 'idCliente');
+        return $this->hasMany(Horario::class, 'codEmpresa', 'codEmpresa');
     }
 
     public function agendas()
     {
-        return $this->hasMany(Agenda::class, 'codEmpresa');
+        return $this->hasMany(Agenda::class, 'codEmpresa', 'codEmpresa');
     }
 }

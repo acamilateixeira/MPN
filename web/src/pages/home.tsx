@@ -1,33 +1,55 @@
+import { Grid, Typography } from '@material-ui/core';
 import { useEffect } from 'react';
 
+import { TabelaServicos } from '../components/Home/tabelaServicos';
 import { Logo } from '../components/logo';
-import { useEmpresas } from '../hooks/useEmpresas';
-import EmpresasServices from '../services/empresas';
+import { useAuth } from '../hooks/useAuth';
+import { useServicos } from '../hooks/useServicos';
+import ServicosServices from '../services/servicos';
 
 export function Home() {
-  const { empresas, setEmpresas } = useEmpresas();
+  const { type, user } = useAuth();
+  const { servicos, setServicos } = useServicos();
 
   useEffect(() => {
     async function loadParams() {
-      const data = await EmpresasServices.index();
+      const servico = await ServicosServices.index();
 
-      setEmpresas(data);
+      setServicos(servico);
     }
 
     loadParams();
-  }, [setEmpresas]);
+  }, [setServicos]);
 
   return (
     <>
-      <Logo />
+      <Grid container spacing={3} justifyContent='center'>
+        <Grid item xs={12} style={{ textAlign: 'center' }}>
+          <Logo />
+        </Grid>
 
-      <div>
-        {empresas.map(empresa => (
-          <div key={empresa.id}>
-            {empresa.nomeRazaoSocial} - {empresa.idAcesso}
-          </div>
-        ))}
-      </div>
+        <Grid item xs={12}>
+          <Typography variant='subtitle1' style={{ textAlign: 'center' }}>
+            Bem vindo, {user?.nomeEmpresa} !
+          </Typography>
+        </Grid>
+
+        {type === 'EMPRESA' ? (
+          <>
+            {servicos !== undefined ? (
+              <Grid item xl={4} lg={4} md={12} sm={12}>
+                <TabelaServicos servicos={servicos} />
+              </Grid>
+            ) : (
+              <Grid item xl={4} lg={4} md={12} sm={12}>
+                <Typography variant='caption'>Nenhum serviço cadastrado.</Typography>
+              </Grid>
+            )}
+          </>
+        ) : (
+          <Typography variant='body2'>É teste besta </Typography>
+        )}
+      </Grid>
     </>
   );
 }
