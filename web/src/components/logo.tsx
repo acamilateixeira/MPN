@@ -8,7 +8,7 @@ export function Logo() {
       titulo: {
         WebkitTextFillColor: 'transparent',
         fontWeight: 800,
-        background: '#C1A3A3',
+        background: '#233DFF',
         WebkitBackgroundClip: 'text',
         fontSize: 30,
         padding: '0px 10px',
@@ -20,7 +20,7 @@ export function Logo() {
 
   return (
     <Typography className={css.titulo} variant='h5'>
-      MPN - Meu Pequeno Negócio
+      ClubXTech - XCalendar
     </Typography>
   );
 }

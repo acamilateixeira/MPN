@@ -19,9 +19,9 @@ export function Navbar({ toggleHiddenSidebar }: NavbarProps) {
       color='inherit'
       position='fixed'
       style={{
-        background: 'rgb(243, 197, 197)',
+        background: 'rgb(35,61,255)',
         boxShadow: '1 0px 8px 5px rgba(0, 0, 0, 0.1)',
-        borderRadius: '10px 10px 0px 0px',
+        borderRadius: '16px 16px 0px 0px',
         top: 'auto',
         bottom: 0,
         width: isMobile ? '100%' : '50%',
@@ -30,14 +30,24 @@ export function Navbar({ toggleHiddenSidebar }: NavbarProps) {
     >
       <Toolbar>
         <Grid container justifyContent={isMobile ? 'flex-end' : 'space-between'} direction='row'>
-          <Grid item lg={5}>
-            <IconButton onClick={toggleHiddenSidebar}>
+          <Grid item>
+            <IconButton
+              onClick={toggleHiddenSidebar}
+              style={{
+                color: '#fff',
+              }}
+            >
               <MdMenuOpen />
             </IconButton>
           </Grid>
 
           <Grid item>
-            <IconButton onClick={signOut}>
+            <IconButton
+              onClick={signOut}
+              style={{
+                color: '#fff',
+              }}
+            >
               <MdExitToApp />
             </IconButton>
           </Grid>

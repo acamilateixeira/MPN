@@ -12,10 +12,21 @@ export function Footer() {
       }}
     >
       <Typography variant='body2' color='textSecondary' align='center'>
+        <img
+          src='/static/images/mini.png'
+          alt='logo'
+          style={{
+            width: '50px',
+            height: '50px',
+          }}
+        />
+      </Typography>
+
+      <Typography variant='body2' color='textSecondary' align='center'>
         {'Copyright © '}
 
         <Link color='inherit' href='https://www.instagram.com/acamilateixeiraa'>
-          CXT - SISTEMAS
+          ClubXTech - Desenvolvimento de Software
         </Link>
 
         {` ${new Date().getFullYear()}.`}

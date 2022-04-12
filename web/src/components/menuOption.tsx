@@ -1,10 +1,10 @@
-import { IconType } from 'react-icons';
-import { Link } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core/styles';
-
+import { IconButton } from '@material-ui/core';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { IconType } from 'react-icons';
+import { Link } from 'react-router-dom';
+
 interface MenuOptionProps {
   to: string;
   title: string;
@@ -20,7 +20,7 @@ export function MenuOption(props: MenuOptionProps) {
       transform: 'translateY(1px)',
       transition: 'transform 0.3s ease-in-out',
       '&:hover': {
-        color: '#D72323',
+        color: '#233DFF',
         transform: 'translateY(-5px)',
       },
     },
