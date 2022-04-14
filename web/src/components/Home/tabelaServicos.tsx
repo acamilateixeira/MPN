@@ -1,4 +1,16 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import {
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
+  Typography,
+} from '@material-ui/core';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
 import { Servico } from '../../models/servico';
 
@@ -14,6 +26,7 @@ export function TabelaServicos({ servicos }: TabelaServicosProps) {
             <TableCell>Descrição</TableCell>
             <TableCell>Detalhes</TableCell>
             <TableCell>Preço</TableCell>
+            <TableCell>Ações</TableCell>
           </TableRow>
         </TableHead>
 
@@ -23,6 +36,21 @@ export function TabelaServicos({ servicos }: TabelaServicosProps) {
               <TableCell>{servico.descricao}</TableCell>
               <TableCell>{servico.detalhes}</TableCell>
               <TableCell>{servico.valor}</TableCell>
+              <TableCell align='center'>
+                <Typography noWrap>
+                  <Tooltip title='Editar'>
+                    <IconButton size='small'>
+                      <FaEdit />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title='Excluir'>
+                    <IconButton size='small'>
+                      <FaTrash />
+                    </IconButton>
+                  </Tooltip>
+                </Typography>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

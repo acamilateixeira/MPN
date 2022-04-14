@@ -24,14 +24,7 @@ class ServicosController extends Controller
                         ->get(),
                     200);
             } else {
-                if (!$request->codEmpresa) {
-                    return response()->json([
-                        'erro' => 'Não autorizado.',
-                    ], 400);
-                }
-
                 $servicos = Servico::with('horarios')
-                    ->where('codEmpresa', $request->codEmpresa)
                     ->get();
 
                 return response()->json($servicos, 200);

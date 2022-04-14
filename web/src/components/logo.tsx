@@ -1,6 +1,6 @@
 import '@fontsource/alata';
 
-import { createStyles, makeStyles, Typography } from '@material-ui/core';
+import { createStyles, Grid, makeStyles, Typography } from '@material-ui/core';
 
 export function Logo() {
   const css = makeStyles(() =>
@@ -19,8 +19,37 @@ export function Logo() {
   )();
 
   return (
-    <Typography className={css.titulo} variant='h5'>
-      ClubXTech - XCalendar
-    </Typography>
+    <>
+      <Grid container alignItems='center' justifyContent='center'>
+        <Grid
+          item
+          xs={5}
+          style={{
+            textAlign: 'right',
+          }}
+        >
+          <img
+            src='/static/images/x.png'
+            alt='logo'
+            style={{
+              width: '50px',
+              height: '50px',
+            }}
+          />
+        </Grid>
+
+        <Grid
+          item
+          xs={7}
+          style={{
+            textAlign: 'left',
+          }}
+        >
+          <Typography className={css.titulo} variant='h5'>
+            Calendar
+          </Typography>
+        </Grid>
+      </Grid>
+    </>
   );
 }

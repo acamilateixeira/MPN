@@ -1,3 +1,4 @@
+import { Servico } from './servico';
 import { TipoAcesso } from './tipoAcesso';
 
 export interface Empresa {
@@ -7,4 +8,5 @@ export interface Empresa {
   telefone: string;
   idAcesso: TipoAcesso;
   username: string;
+  servicos: Servico[];
 }

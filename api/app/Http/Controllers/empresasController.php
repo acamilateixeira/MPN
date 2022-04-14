@@ -27,17 +27,8 @@ class EmpresasController extends Controller
                 $empresas = Empresa::with('servicos', 'horarios', 'acessos', 'agendas')
                     ->get();
 
-                $empresasCollection = $empresas->map(function ($empresa) {
-                    return [
-                        'nomeRazaoSocial' => $empresa->nomeRazaoSocial,
-                        'codEmpresa' => $empresa->codEmpresa,
-                        'servicos' => $empresa->servicos,
-                        'horarios' => $empresa->horarios,
-                    ];
-                });
-
                 return response()->json(
-                    $empresasCollection,
+                    $empresas,
                     200);
             }
         }

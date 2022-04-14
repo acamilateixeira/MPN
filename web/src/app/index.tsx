@@ -1,3 +1,4 @@
+import '@fontsource/alata';
 import '@fontsource/poppins';
 
 import { CssBaseline, Typography } from '@material-ui/core';
@@ -21,6 +22,10 @@ export function App() {
       },
       secondary: {
         main: '#13A9FF',
+      },
+
+      background: {
+        default: '#fff',
       },
     },
     typography: {

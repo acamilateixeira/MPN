@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { ReactNode, useState } from 'react';
 
-import { Footer } from './footer';
 import { Navbar } from './navbar';
 import { Sidebar } from './sidebar';
 
@@ -47,10 +46,6 @@ export function Dashboard({ children }: DashboardProps) {
             <Grid container>
               <Grid item xs={12}>
                 {children}
-              </Grid>
-
-              <Grid item xs={12}>
-                <Footer />
               </Grid>
             </Grid>
           </Container>

@@ -187,6 +187,8 @@ export function Entrar() {
         setTipoAuth={setTipoAuth}
         onClose={() => setModalLogin(false)}
       />
+
+      <Footer />
     </>
   );
 }

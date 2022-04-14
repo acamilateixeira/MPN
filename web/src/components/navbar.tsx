@@ -27,11 +27,11 @@ export function Navbar({ toggleHiddenSidebar }: NavbarProps) {
       color='inherit'
       position='fixed'
       style={{
+        bottom: 0,
+        top: 'auto',
         background: 'rgb(35,61,255)',
         boxShadow: '1 0px 8px 5px rgba(0, 0, 0, 0.1)',
         borderRadius: '16px 16px 0px 0px',
-        top: 'auto',
-        bottom: 0,
         marginTop: 0,
         width: isMobile ? '100%' : '50%',
         transform: isMobile ? 'translateX(0%)' : 'translateX(-50%)',
