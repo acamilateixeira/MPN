@@ -8,5 +8,6 @@ export interface Empresa {
   telefone: string;
   idAcesso: TipoAcesso;
   username: string;
+  codEmpresa: string;
   servicos: Servico[];
 }
